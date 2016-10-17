@@ -1,4 +1,5 @@
 use std::io;
+extern crate docker;
 
 fn main() {
     println!("Read line:");
@@ -14,6 +15,7 @@ fn main() {
         .expect("Failed to parse");
 
     scoring(guess);
+    docker::public_function();
 }
 
 fn scoring(n: u32) -> u32 {
