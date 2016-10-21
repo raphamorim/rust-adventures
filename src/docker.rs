@@ -2,11 +2,28 @@
 // #![crate_name = "docker"]
 
 extern crate hyper;
+
 use std::io::Read;
 
-pub fn new_client(end : &str) {
+pub struct Docker {
+    endpoint: &'static str
+}
+
+impl Docker {
+    pub fn new(endpoint : &'static str) -> Docker {
+        Docker { endpoint: endpoint }
+    }
+
+    pub fn list_images(&self) {
+        let api: &str = "/images/json";
+        let url = format!("{}{}", self.endpoint, api);
+        docker_list_images(&url)
+    }
+}
+
+fn docker_list_images(url : &str) {
     let client = hyper::Client::new();
-    let url = "http://127.0.0.1:5000/api";
+    println!("{}", url);
     let mut response = match client.get(url).send() {
         Ok(response) => response,
         Err(_) => panic!("Whoops."),
@@ -16,6 +33,6 @@ pub fn new_client(end : &str) {
         Ok(_) => (),
         Err(_) => panic!("I give up."),
     };
-    println!("buf: {}", buf);
+    println!("{}", buf);
 }
 
